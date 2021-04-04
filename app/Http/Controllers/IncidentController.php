@@ -71,13 +71,15 @@ class IncidentController extends Controller
 			$peopleName 		= $request->name;
 			$peopleType 		= $request->type;
 			
-			foreach($peopleName as $key=>$val){
-				$people 		= new People;
-				$people->name	= $peopleName[$key];
-				if(isset($peopleType[$key]) && in_array($peopleType[$key],array('staff','witness'))){
-					$people->type	= $peopleType[$key];
-				}			
-				$incident->people()->save($people);			
+			if(!empty($peopleName)){
+				foreach($peopleName as $key=>$val){
+					$people 		= new People;
+					$people->name	= $peopleName[$key];
+					if(isset($peopleType[$key]) && in_array($peopleType[$key],array('staff','witness'))){
+						$people->type	= $peopleType[$key];
+					}			
+					$incident->people()->save($people);			
+				}
 			}
 			
 			$responseCode		= 201;
