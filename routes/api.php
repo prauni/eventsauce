@@ -18,5 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+Route::resource('/',App\Http\Controllers\IncidentController::class)->only(['index']);
 Route::resource('incident',App\Http\Controllers\IncidentController::class)->only(['index','store']);

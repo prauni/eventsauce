@@ -15,16 +15,16 @@ class Incident extends Model
 	
 	public function location()
     {
-    	return $this->hasOne('App\Models\Location','incident_id');
+		return $this->hasOne(Location::class);
     }
 	
 	public function people()
     {
-    	return $this->hasMany('App\Models\People','incident_id');
+    	return $this->hasMany(People::class);
     }
 	
 	public function categoryDetails()
     {
-    	return $this->belongsTo('App\Models\Category','category_id');//->select(array('id','title'));
+    	return $this->belongsTo(Category::class);
     }
 }

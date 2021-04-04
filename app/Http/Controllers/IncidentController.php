@@ -6,6 +6,7 @@ use App\Models\Incident;
 use App\Models\Location;
 use App\Models\People;
 use Illuminate\Http\Request;
+use Validator;
 
 class IncidentController extends Controller
 {
@@ -17,8 +18,7 @@ class IncidentController extends Controller
     public function index()
     {
         $incident = Incident::with(['location','people'])->get();
-		//$incident = Incident::with(['peopleList' => function($query) {$query->select('type','name');}])->get();
-		return response($incident);
+		return response()->json($incident, 200);
     }
 
     /**
@@ -37,38 +37,53 @@ class IncidentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request)	
     {
-
+		$rules = [
+					'title' => 'required|max:255',					
+					'lat' => 'required|gte:0|lte:90',
+					'long' => 'required|gte:-180|lte:180',
+					'category' => 'required|integer|exists:categories,id',
+					'incidentDate' => 'required|date',					
+				 ];
+		$validation = Validator::make($request->all(),$rules);
 		
-		$incident 				= new Incident;
-		$incident->title 		= $request->title;
-		$incident->category_id 	= $request->category;		
-		$incident->comments 	= $request->comments;		
-		$incident->incidentDate = $request->incidentDate;		
-		$incident->save();		
-		
-		$location 			= new Location;
-		$location->lat 		= $request->lat;
-		$location->long 	= $request->long;
-		$incident->location()->save($location);			
-		
-		
-		$peopleArr			= array();
-		$peopleName 		= $request->name;
-		$peopleType 		= $request->type;
-		
-		foreach($peopleName as $key=>$val){
-			$people 		= new People;
-			$people->name	= $peopleName[$key];
-			if(isset($peopleType[$key]) && in_array($peopleType[$key],array('staff','witness'))){
-				$people->type	= $peopleType[$key];
-			}			
-			$incident->people()->save($people);			
+		if($validation->fails()){
+			$responseCode		= 202;
+			$response['status'] = 0;
+			$response['msg']	= 'Form validation failed';
+			$response['errors'] = $validation->messages();
 		}
-
-        $arr = array('status'=>'success','msg'=>'Incident created successfully.');
-		return response($arr);
+		else{
+			$incident 				= new Incident;
+			$incident->title 		= $request->title;
+			$incident->category_id 	= $request->category;		
+			$incident->comments 	= $request->comments;		
+			$incident->incidentDate = $request->incidentDate;		
+			$incident->save();		
+			
+			$location 			= new Location;
+			$location->lat 		= $request->lat;
+			$location->long 	= $request->long;
+			$incident->location()->save($location);			
+						
+			$peopleArr			= array();
+			$peopleName 		= $request->name;
+			$peopleType 		= $request->type;
+			
+			foreach($peopleName as $key=>$val){
+				$people 		= new People;
+				$people->name	= $peopleName[$key];
+				if(isset($peopleType[$key]) && in_array($peopleType[$key],array('staff','witness'))){
+					$people->type	= $peopleType[$key];
+				}			
+				$incident->people()->save($people);			
+			}
+			
+			$responseCode		= 201;
+			$response = array('status'=>1,'msg'=>'Incident created successfully.');			
+		}
+		return response()->json($response, $responseCode);
     }
 
     /**
