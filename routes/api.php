@@ -17,7 +17,7 @@ use App\Http\Controllers\EmployeesController;
 */
 Route::resource('employee', EmployeesController::class)->only(['index','store','update']);
 Route::post('employee/transfer', 'App\Http\Controllers\EmployeesController@transfer')->name('employee.transfer');
-Route::get('employee/transfer_log', 'App\Http\Controllers\EmployeesController@transfer_log')->name('employee.transfer_log');
+Route::any('employee/transfer_log/', 'App\Http\Controllers\EmployeesController@transfer_log')->name('employee.transfer_log');
 
 
 Route::group([

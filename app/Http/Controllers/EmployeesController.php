@@ -57,7 +57,9 @@ class EmployeesController extends Controller
 			$employee->dept_id 		= $request->dept_id;
 			$employee->first_name 	= $request->first_name;		
 			$employee->last_name 	= $request->last_name;
-			$employee->save();
+			$res = $employee->save();
+			
+			EmployeeTransfer::create(['emp_id'=>$employee->id,'dept_id'=>$employee->dept_id]);
 			
 			$responseCode		= 201;
 			$response = array('status'=>1,'msg'=>'Employee added successfully.');
@@ -120,6 +122,8 @@ class EmployeesController extends Controller
 			$employee 	= Employee::find($emp_id);
 			$employee->update($arr);
 			
+			EmployeeTransfer::create(['emp_id'=>$emp_id,'dept_id'=>$request->dept_id]);
+			
 			$responseCode		= 201;
 			$response = array('status'=>1,'msg'=>'Employee department updated successfully.');			
 		}
@@ -128,11 +132,12 @@ class EmployeesController extends Controller
 
 	public function transfer_log(Request $request)
 	{
-		$emp_id = $request->emp_id;
-		
-		$transferLog = EmployeeTransfer::get();
+		$emp_id = $request->emp_id;				
 		if($emp_id>0){
-			
+			$transferLog = EmployeeTransfer::where('emp_id',$emp_id)->get();
+		}
+		else{
+			$transferLog = EmployeeTransfer::orderBy('emp_id')->get();
 		}
 		
 		
