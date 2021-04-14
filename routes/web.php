@@ -35,9 +35,14 @@ Route::get('/dashboard', function () {
 
 Route::get('/accounts', [AccountsController::class, 'index'])->middleware(['auth', 'verified'])->name('accounts');
 
+Route::get('/employees', [App\Http\Controllers\EmployeesController::class, 'index'])->name('employees');
+
+
 Route::get('/accountslist', [AccountsController::class, 'accountslist'])->middleware(['auth', 'verified'])->name('accountslist');
 
-
+Route::get('/facadeex', function() {
+   return TestFacades::testingFacades();
+});
 
 
 require __DIR__.'/auth.php';
