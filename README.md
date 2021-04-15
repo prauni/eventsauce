@@ -6,12 +6,12 @@
 <p>2.	Setup Env file for Database credentials</p>
 <p>
 3.	Run command: </p>
-<ul><li><p>a)	composer update</p>
+<ul><li><p>composer update</p>
 <p>
 Setup project enviroment</p>
 </li><li>
 <p>
-b)	php artisan migrate</p>
+php artisan migrate</p>
 <p>
 From command prompt to create database table </p>
 
