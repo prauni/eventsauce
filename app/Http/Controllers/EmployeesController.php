@@ -18,7 +18,9 @@ class EmployeesController extends Controller
     {
 		//$employee = Employee::query()->with(['DeptDetails','EmpTransferLog'])->get();
 		$employee = Employee::query()->get();
-		return response()->json($employee, 200);
+		
+		$response = array('status'=>1,'msg'=>'Employee list.','emp_list' => $employee);		
+		return response()->json($response, 200);
     }
 
     /**
@@ -143,7 +145,7 @@ class EmployeesController extends Controller
 		
 		$response['status']		= 1;
 		$response['msg']		= 'Transfer Log found successfully.';		
-		$response['resultlist']	= $transferLog;
+		$response['emp_transfer_log_list']	= $transferLog;
 		return response()->json($response, 200);
 	}
 	
@@ -155,6 +157,10 @@ class EmployeesController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+		//echo '------'.$employee->id;exit;
+        $employee->delete();
+		$response['status']		= 1;
+		$response['msg']		= 'Employee deleted successfully..';		
+		return response()->json($response, 200);		
     }
 }

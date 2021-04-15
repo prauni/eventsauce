@@ -18,6 +18,7 @@ class CreateEmployeeTable extends Migration
 			$table->integer('dept_id')->references('id')->on('department')->nullable();;
 			$table->string('first_name');
             $table->string('last_name');
+			$table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });
     }

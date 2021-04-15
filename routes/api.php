@@ -16,6 +16,7 @@ use App\Http\Controllers\EmployeesController;
 |
 */
 Route::resource('employee', EmployeesController::class)->only(['index','store','update']);
+Route::delete('employee/delete/{employee}', 'App\Http\Controllers\EmployeesController@destroy')->name('employee.destroy');
 Route::post('employee/transfer', 'App\Http\Controllers\EmployeesController@transfer')->name('employee.transfer');
 Route::any('employee/transfer_log/', 'App\Http\Controllers\EmployeesController@transfer_log')->name('employee.transfer_log');
 

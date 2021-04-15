@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use \DateTimeInterface;
 
 class Employee extends Model
 {
     use HasFactory;
+	use SoftDeletes;
 	//public $table = 'employees';
     protected $fillable = ['dept_id','first_name','last_name'];	
 	protected $visible 	= ['id','dept_id','first_name','last_name'];
