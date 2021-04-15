@@ -134,7 +134,7 @@ class EmployeesController extends Controller
 
 	public function transfer_log(Request $request)
 	{
-		$emp_id = $request->emp_id;				
+		$emp_id = $request->employee_id;				
 		if($emp_id>0){
 			$transferLog = EmployeeTransfer::where('emp_id',$emp_id)->get();
 		}

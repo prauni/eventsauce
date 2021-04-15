@@ -10,7 +10,7 @@ class EmployeeTransfer extends Model
     use HasFactory;
 	//public $table = 'employees';
     protected $fillable = ['emp_id','dept_id'];	
-	protected $visible 	= ['emp_id','dept_id'];	
+	protected $visible 	= ['emp_id','dept_id','created_at'];	
 	
 	public function DeptDetails()
     {
